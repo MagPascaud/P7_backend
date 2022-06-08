@@ -3,7 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const path = require('path');
 const mongoose = require('mongoose');
-
+const dotenv = require('dotenv');
+dotenv.config({
+  path:'config/.env'
+})
 
 
 const app = express();
@@ -15,7 +18,7 @@ app.use(express.json());
 
 //Import du package Mongoose
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_MDP}@cluster0.ekvgs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_MDP}@cluster0.ekvgs.mongodb.net/reseauSocial?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
