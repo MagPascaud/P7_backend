@@ -1,16 +1,16 @@
 //import des packages utiles
 const express = require("express");
-const cors = require("cors");
-const path = require('path');
+// const cors = require("cors");
+// const path = require('path');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config({
-  path:'config/.env'
-})
+// const dotenv = require('dotenv');
+// dotenv.config({
+//   path:'config/.env'
+// })
 
 
 const app = express();
-app.use(cors());
+// app.use(cors());
 
 //Utilisation d'express.json pour analyser le corps des requêtes
 app.use(express.json());
