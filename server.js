@@ -1,16 +1,16 @@
 //import des packages utiles
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 // const path = require('path');
 const mongoose = require('mongoose');
-// const dotenv = require('dotenv');
-// dotenv.config({
-//   path:'config/.env'
-// })
+const dotenv = require('dotenv');
+dotenv.config({
+  path:'config/.env'
+})
 
 
 const app = express();
-// app.use(cors());
+app.use(cors());
 
 //Utilisation d'express.json pour analyser le corps des requêtes
 app.use(express.json());
@@ -25,8 +25,6 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_MD
   })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-
 
 
 app.listen(3000, () => {
