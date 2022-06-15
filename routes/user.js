@@ -7,7 +7,6 @@ const router = Router();
 
 //Création des routes compte utilisateur
 router.get('/:id');
-router.post('/');
 router.put('/:id');
 router.delete('/:id');
 
