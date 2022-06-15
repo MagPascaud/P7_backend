@@ -12,6 +12,7 @@ router.post('/');
 router.put('/:id');
 router.delete('/:id');
 router.post('/:id/like');
+router.get('/:id/comments');
 
 
 module.exports = router;
