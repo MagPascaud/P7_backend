@@ -29,11 +29,11 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_MD
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postsRoutes);
-app.use('/api/users', usersRoutes);
+// app.use('/api/auth', authRoutes);
+// app.use('/api/posts', postsRoutes);
+// app.use('/api/users', usersRoutes);
 
 
 app.listen(3000, () => {
