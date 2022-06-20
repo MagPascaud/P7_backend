@@ -1,6 +1,5 @@
 const {Router} = require('express');
-// const {getAllComments,getOneComment,createOneComment,updateOneComment,deleteOneComment,likeOrDislikeOneComment} = require('../controllers/comments');
-// const {getOneUser,updateOneUser,deleteOneUser} = require('../controllers/user');
+// const {getOneUser,updateOneUser,deleteOneUser} = require('../controllers/users');
 
 const router = Router();
 const auth = require('../middlewares/auth');
