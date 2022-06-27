@@ -1,10 +1,10 @@
 //import des packages utiles
 const express = require("express");
 const cors = require("cors");
-// const path = require('path');
+const path = require('path');
 const authRoutes = require("./routes/auth");
 const postsRoutes = require('./routes/post');
-const userssRoutes = require('./routes/user');
+const usersRoutes = require('./routes/user');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config({
@@ -29,11 +29,11 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_MD
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// app.use('/api/auth', authRoutes);
-// app.use('/api/posts', postsRoutes);
-// app.use('/api/users', usersRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/users', usersRoutes);
 
 
 app.listen(3000, () => {
