@@ -1,19 +1,13 @@
 const User = require("../models/User");
 const fs = require('fs');
 
-//Logique de la diffusion de tous les utilisateurs
-exports.getAllUsers = (req, res) => {
-    User.find()
-        .then(users => res.status(200).json(users))
-        .catch(error => res.status(500).json({ error }));
-};
 
 //Logique de récupération d'un seul utilisateur
 exports.getOneUser = (req, res) => {
     User.findOne({ _id: req.params.id })
         .then(user => {
             if (!user) {
-                return res.status(404).json({ message: "Utilsateur non trouvé" })
+                return res.status(404).json({ message: "Utilisateur non trouvé" })
             }
             res.status(200).json(user);
         })

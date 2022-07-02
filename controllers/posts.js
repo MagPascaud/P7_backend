@@ -2,12 +2,11 @@
 
 const Post = require("../models/Post");
 const fs = require('fs');
-const { post } = require("../routes/post");
-
 
 //Logique métier de la diffusion de tous les posts
 exports.getAllPosts = (req, res) => {
     Post.find()
+        .populate(['user.userName', 'user.userImageUrl', 'user._id'])
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(500).json({ error }));
 };
@@ -23,6 +22,7 @@ exports.getAllPosts = (req, res) => {
 //Logique de récupération d'un seul post
 exports.getOnePost = (req, res) => {
     Post.findOne({ _id: req.params.id })
+        .populate(['user.userName', 'user.userImageUrl', 'user._id'])
         .then(post => {
             if (!post) {
                 return res.status(404).json({ message: "Post non trouvé" })
@@ -31,15 +31,6 @@ exports.getOnePost = (req, res) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
-// AVEC METHODE ASYNC/AWAIT ?? :
-// exports.getOnePost = async(req, res) => {
-//     try {
-//         const post = await Post.findOne()
-//         return res.status(200).json(post)
-//     } catch (error) {
-//         return res.status(500).json({ error })
-//     }
-// }
 
 //Logique de la créaton d'un post
 exports.createOnePost = (req, res) => {

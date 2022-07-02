@@ -6,9 +6,9 @@ const auth = require('../middlewares/auth');
 const multer = require('../middlewares/multer-config');
 
 //Création des routes compte utilisateur
-router.get('/:id', auth);
-router.put('/:id', auth, multer);
-router.delete('/:id', auth);
+router.get('/:id', auth, getOneUser);
+router.put('/:id', auth, multer, updateOneUser);
+router.delete('/:id', auth, deleteOneUser);
 
 
 module.exports = router;

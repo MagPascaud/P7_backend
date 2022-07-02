@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //Création du modèle de post
 const postSchema = mongoose.Schema({
-    userId: { type: String, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref:'User', required: true },
     imageUrl: { type: String, required: false },
     postText: { type: String, required: false },
     postTitle: { type: String, required: true },
