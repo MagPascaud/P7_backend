@@ -34,9 +34,10 @@ exports.getOnePost = (req, res) => {
 
 //Logique de la créaton d'un post
 exports.createOnePost = (req, res) => {
+    console.log (req.body);
     const post = new Post({
-        ...JSON.parse(req.body.post),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+        ...req.body,
+        // imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
     });
     post.save()
         .then(() => res.status(201).json({ message: 'Post créé !' }))
@@ -47,7 +48,7 @@ exports.createOnePost = (req, res) => {
 exports.updateOnePost = (req, res) => {
     const postObject = req.file ?
         {
-            ...JSON.parse(req.body.post),
+            ...JSON.parse(req.body),
             imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
         } : { ...req.body };
     Post.findOne({ _id: req.params.id })
