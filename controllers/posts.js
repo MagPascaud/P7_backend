@@ -22,19 +22,25 @@ exports.getAllPosts = (req, res) => {
 //Logique de récupération d'un seul post
 exports.getOnePost = (req, res) => {
     Post.findOne({ _id: req.params.id })
-        .populate(['user.userName', 'user.userImageUrl', 'user._id'])
+        .populate({
+            path: 'User',
+            select: 'userName userImageUrl'
+        })
         .then(post => {
             if (!post) {
                 return res.status(404).json({ message: "Post non trouvé" })
             }
             res.status(200).json(post);
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ error })
+        });
 };
 
 //Logique de la créaton d'un post
 exports.createOnePost = (req, res) => {
-    console.log (req.body);
+    console.log(req.body);
     const post = new Post({
         ...req.body,
         // imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
@@ -46,29 +52,43 @@ exports.createOnePost = (req, res) => {
 
 //Logique de la mise à jour d'un post et/ou de son image
 exports.updateOnePost = (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
     const postObject = req.file ?
         {
-            ...JSON.parse(req.body),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+            // ...JSON.parse(req.body),
+            // imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
         } : { ...req.body };
     Post.findOne({ _id: req.params.id })
         .then(post => {
             if (!post) {
                 return res.status(404).json({ message: "post non trouvé" })
             }
-            const oldImageName = post.imageUrl.split('/images/posts/')[1];
-            post.updateOne({ _id: req.params.id }, { ...postObject })
-                .then(() => {
-                    if (req.file) {
+            let oldImageName;
+            if (post.imageUrl) {
+                oldImageName = post.imageUrl.split('/images/posts/')[1]
+            }
+            console.log(postObject);
+            console.log(req.params.id);
+            Post.findOneAndUpdate({ _id: req.params.id }, postObject)
+                .then((updatedPost) => {
+                    console.log(updatedPost);
+                    if (req.file && oldImageName) {
                         fs.unlink(`images/${oldImageName}`, () => {
                             console.log("fichier supprimé");
                         });
                     }
                     res.status(200).json({ message: 'mis à jour du post' })
                 })
-                .catch(error => res.status(400).json({ error }));
+                .catch(error => {
+                    console.error(error);
+                    return res.status(400).json({ error })
+                });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ error })
+        });
 };
 
 //Logique de la suppression d'un post et son image
@@ -78,17 +98,28 @@ exports.deleteOnePost = (req, res) => {
             if (!post) {
                 return res.status(404).json({ message: "Post non trouvé" })
             }
-            const filename = post.imageUrl.split('/images/posts/')[1];
+            let fileName;
+            if (post.imageUrl) {
+                filename = post.imageUrl.split('/images/posts/')[1];
+            }
             Post.deleteOne({ _id: req.params.id })
                 .then(() => {
-                    fs.unlink(`images/posts/${filename}`, () => {
-                        console.log("fichier supprimé");
-                    });
+                    if (fileName) {
+                        fs.unlink(`images/posts/${filename}`, () => {
+                            console.log("fichier supprimé");
+                        });
+                    }
                     res.status(200).json({ message: 'Post supprimé' })
                 })
-                .catch(error => res.status(400).json({ error }));
+                .catch(error => {
+                    console.error(error);
+                    return res.status(400).json({ error })
+                });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ error })
+        });
 };
 
 //Logique de la possibilité à l'utilisateur de liker un post
