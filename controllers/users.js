@@ -18,7 +18,7 @@ exports.updateOneUser = (req, res) => {
     const userObject = req.file ?
         {
             ...JSON.parse(req.body.user),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/users/${req.file.filename}`
+            userImageUrl: `${req.protocol}://${req.get('host')}/images/users/${req.file.filename}`
         } : { ...req.body };
     User.findOne({ _id: req.params.id })
         .then(user => {
@@ -26,10 +26,10 @@ exports.updateOneUser = (req, res) => {
                 return res.status(404).json({ message: "utilisateur non trouvé" })
             }
             let oldImageName;
-            if (user.imageUrl) {
-                oldImageName = user.imageUrl.split('/images/users/')[1];
+            if (user.userImageUrl) {
+                oldImageName = user.userImageUrl.split('/images/users/')[1];
             }
-            user.updateOne({ _id: req.params.id }, { ...userObject })
+            User.updateOne({ _id: req.params.id }, userObject)
                 .then(() => {
                     if (req.file && oldImageName) {
                         fs.unlink(`images/${oldImageName}`, () => {
@@ -52,12 +52,12 @@ exports.deleteOneUser = (req, res) => {
             }
             let oldImageName;
             if (user.imageUrl) {
-                oldImageName = user.imageUrl.split('/images/users/')[1];
+                oldImageName = user.imageUrl.split('/../images/users/')[1];
             }
             User.deleteOne({ _id: req.params.id })
                 .then(() => {
                     if (oldImageName) {
-                        fs.unlink(`images/users/${filename}`, () => {
+                        fs.unlink(`../images/users/${filename}`, () => {
                             console.log("fichier supprimé");
                         });
                     }

@@ -41,7 +41,7 @@ exports.getOnePost = (req, res) => {
 exports.createOnePost = (req, res) => {
     const post = new Post({
         ...req.body,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+        // imageUrl: `${req.protocol}://${req.get('host')}/../images/posts/${req.file.filename}`
     });
     post.save()
         .then(() => res.status(201).json({ message: 'Post créé !' }))
@@ -63,7 +63,7 @@ exports.updateOnePost = (req, res) => {
             }
             let oldImageName;
             if (post.imageUrl) {
-                oldImageName = post.imageUrl.split('/images/posts/')[1]
+                oldImageName = post.imageUrl.split('images/posts/')[1]
             }
             Post.findOneAndUpdate({ _id: req.params.id }, postObject)
                 .then(() => {
@@ -89,12 +89,12 @@ exports.deleteOnePost = (req, res) => {
             }
             let fileName;
             if (post.imageUrl) {
-                filename = post.imageUrl.split('/images/posts/')[1];
+                filename = post.imageUrl.split('../images/posts/')[1];
             }
             Post.deleteOne({ _id: req.params.id })
                 .then(() => {
                     if (fileName) {
-                        fs.unlink(`images/posts/${filename}`, () => {
+                        fs.unlink(`../images/posts/${filename}`, () => {
                             console.log("fichier supprimé");
                         });
                     }
