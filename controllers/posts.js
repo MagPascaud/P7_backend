@@ -41,7 +41,7 @@ exports.getOnePost = (req, res) => {
 exports.createOnePost = (req, res) => {
     const post = new Post({
         ...req.body,
-        // imageUrl: `${req.protocol}://${req.get('host')}/../images/posts/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
     });
     post.save()
         .then(() => res.status(201).json({ message: 'Post créé !' }))
@@ -53,8 +53,8 @@ exports.createOnePost = (req, res) => {
 exports.updateOnePost = (req, res) => {
     const postObject = req.file ?
         {
-            // ...JSON.parse(req.body),
-            // imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+            ...req.body,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
         } : { ...req.body };
     Post.findOne({ _id: req.params.id })
         .then(post => {

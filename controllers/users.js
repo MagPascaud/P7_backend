@@ -17,7 +17,7 @@ exports.getOneUser = (req, res) => {
 exports.updateOneUser = (req, res) => {
     const userObject = req.file ?
         {
-            ...JSON.parse(req.body.user),
+            ...req.body.user,
             userImageUrl: `${req.protocol}://${req.get('host')}/images/users/${req.file.filename}`
         } : { ...req.body };
     User.findOne({ _id: req.params.id })
