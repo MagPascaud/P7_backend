@@ -94,7 +94,7 @@ exports.deleteOnePost = (req, res) => {
             Post.deleteOne({ _id: req.params.id })
                 .then(() => {
                     if (fileName) {
-                        fs.unlink(`../images/posts/${filename}`, () => {
+                        fs.unlink(`../images/posts/${fileName}`, () => {
                             console.log("fichier supprimé");
                         });
                     }
