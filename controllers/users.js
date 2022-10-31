@@ -4,6 +4,7 @@ const fs = require('fs');
 //Logique de récupération d'un seul utilisateur
 exports.getOneUser = (req, res) => {
     User.findOne({ _id: req.params.id })
+        .populate('posts')
         .then(user => {
             if (!user) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" })

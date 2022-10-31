@@ -8,6 +8,7 @@ const fs = require('fs');
 exports.getAllPosts = (req, res) => {
     Post.find()
         .populate('user', 'userName userImageUrl _id')
+        .sort([['createdAt', -1]])
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(500).json({ message: error.message }));
 };
@@ -94,7 +95,7 @@ exports.deleteOnePost = (req, res) => {
             Post.deleteOne({ _id: req.params.id })
                 .then(() => {
                     if (fileName) {
-                        fs.unlink(`../images/posts/${fileName}`, () => {
+                        fs.unlink(`../images/posts/${filename}`, () => {
                             console.log("fichier supprimé");
                         });
                     }
