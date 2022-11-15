@@ -109,28 +109,33 @@ exports.deleteOnePost = (req, res) => {
 //Logique de la possibilité à l'utilisateur de liker un post
 
 exports.likeOnePost = (req, res) => {
+    console.log(req.body)
     Post.findOne({ _id: req.params.id })
         .then(post => {
             //Si like = 1 et userId est false
-            if (!post.usersLiked.includes(req.body.userId) && req.body.like === 1) {
+            if (!post.userLiked.includes(req.body.userId)) {
+                console.log(post)
                 Post.updateOne({ _id: req.params.id },
                     {
                         $inc: { likes: 1 },
-                        $push: { usersLiked: req.body.userId }
+                        $push: { userLiked: req.body.userId }
                     })
                     .then(() => res.status(201).json({ message: "Je like ce post !" }))
-                    .catch(error => res.status(400).json({ message: error.message }));
+                    .catch(error => res.status(400).json({ message: "update1" }));
             }
             //Si like = 1 et userId est true : on supprime le like et l'userId
-            else if (post.usersLiked.includes(req.body.userId) && req.body.like === 0) {
+            else {
                 Post.updateOne({ _id: req.params.id },
                     {
                         $inc: { likes: -1 },
-                        $pull: { usersLiked: req.body.userId }
+                        $pull: { userLiked: req.body.userId }
                     })
                     .then(() => res.status(201).json({ message: "Like retiré" }))
-                    .catch(error => res.status(400).json({ message: error.message }));
+                    .catch(error => res.status(400).json({ message: "update2" }));
             }
         })
-        .catch(error => res.status(500).json({ message: error.message }));
+        .catch(error => {
+            console.error(error)
+            res.status(500).json({ message: "update3" })
+        });
 };
