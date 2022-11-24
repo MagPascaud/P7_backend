@@ -4,9 +4,7 @@ const User = require("../models/User");
 
 module.exports = async (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(" ")[1];
-        const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-        const user = await User.findOne({ where: { id: decodedToken.userId } });
+        const user = await User.findOne({ where: { id: req.userId } });
 
         if (!user) {
             return res

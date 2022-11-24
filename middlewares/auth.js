@@ -5,9 +5,10 @@ const jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
-    jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
+    const decodenToken = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
+    req.userId = decodenToken.userId;
     next()
-  } catch(error) {
+  } catch (error) {
     res.status(401).json({
       error: 'Invalid Token'
     });

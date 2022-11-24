@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Post = require("../models/Post");
 const fs = require('fs');
 
 //Logique de récupération d'un seul utilisateur
@@ -9,7 +10,12 @@ exports.getOneUser = (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" })
             }
-            res.status(200).json(user);
+            Post.find({ user: req.params.id })
+                .then((posts) => {
+                    user.posts = posts;
+                    res.status(200).json(user);
+                })
+                .catch(error => res.status(500).json({ message: error.message }));
         })
         .catch(error => res.status(500).json({ message: error.message }));
 };
