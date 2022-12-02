@@ -40,10 +40,12 @@ exports.getOnePost = (req, res) => {
 //Logique de la créaton d'un post
 
 exports.createOnePost = (req, res) => {
-    const post = new Post({
-        ...req.body,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
-    });
+    const postObject = req.file ?
+        {
+            ...req.body,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
+        } : { ...req.body };
+    const post = new Post(postObject);
     post.save()
         .then(() => res.status(201).json({ message: 'Post créé !' }))
         .catch(error => res.status(400).json({ message: error.message }));

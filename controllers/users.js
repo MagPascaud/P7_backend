@@ -68,7 +68,12 @@ exports.deleteOneUser = (req, res) => {
                             console.log("fichier supprimé");
                         });
                     }
-                    res.status(200).json({ message: 'Utilisateur supprimé' })
+                    Post.deleteMany({
+                        user: req.params.id
+                    })
+                        .then(() => {
+                            res.status(200).json({ message: 'Utilisateur supprimé' })
+                        })
                 })
                 .catch(error => res.status(400).json({ message: error.message }));
         })
