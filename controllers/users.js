@@ -22,6 +22,7 @@ exports.getOneUser = (req, res) => {
 
 //Logique de la mise à jour d'un utilisateur et/ou de son image
 exports.updateOneUser = (req, res) => {
+    console.log(req.body)
     const userObject = req.file ?
         {
             ...req.body.user,
